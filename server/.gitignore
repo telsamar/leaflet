@@ -1,0 +1,4 @@
+.DS_Store
+/redux/client/public
+node_modules
+template_site/server/services/.env
