@@ -1,4 +1,4 @@
-import { ADD_MARKER, CLEAR_MARKERS, SET_LATITUDE, SET_LONGITUDE, RESET_COORDINATES } from "./actions";
+import { ADD_MARKER, CLEAR_MARKERS, SET_LATITUDE, SET_LONGITUDE, RESET_COORDINATES, SOCKET_ADD_MARKER, SOCKET_INIT_MARKERS } from "./actions";
 
 const initialState = {
   latitude: "",
@@ -9,17 +9,11 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_MARKER:
-      const newMarkers = [
-        ...state.markers,
-        [parseFloat(action.payload.latitude), parseFloat(action.payload.longitude)],
-      ];
-      localStorage.setItem("markers", JSON.stringify(newMarkers));
       return {
         ...state,
-        markers: newMarkers,
+        markers: [...state.markers, [parseFloat(action.payload.latitude), parseFloat(action.payload.longitude)]],
       };
     case CLEAR_MARKERS:
-      localStorage.removeItem("markers");
       return {
         ...state,
         markers: [],
@@ -39,6 +33,16 @@ const reducer = (state = initialState, action) => {
         ...state,
         latitude: "",
         longitude: "",
+      };
+    case SOCKET_ADD_MARKER:
+      return {
+        ...state,
+        markers: [...state.markers, action.payload],
+      };
+    case SOCKET_INIT_MARKERS:
+      return {
+        ...state,
+        markers: action.payload,
       };
     default:
       return state;

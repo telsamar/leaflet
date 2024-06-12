@@ -4,9 +4,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const express = require('express');
 
-// create webserver
+const { server_socket } = require('./services/server_socket');
+
 const app = express();
-// set port
 const port = 3030;
 
 // set settings of webserver 
@@ -26,6 +26,9 @@ app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
 app.use(bodyParser.json({limit: '200mb', extended: true}));
 app.use(express.static(path.join(__dirname, '../my-map-project/build')));
 
+// routing
+app.use("/api", workRouter);
+
 // create sockets server
 const http = require('http').Server(app);
 const socketIo = require('socket.io')(http, {
@@ -36,8 +39,7 @@ const socketIo = require('socket.io')(http, {
     }
 });
 
-// routing
-app.use("/api", workRouter);
+server_socket.create(socketIo);
 
 // start server
 http.listen(port, '0.0.0.0', function() {

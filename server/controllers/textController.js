@@ -2,11 +2,6 @@ const fs = require('fs');
 
 exports.settings = require('../settings/settings.json'); 
 
-
-
-
-
-
 const getText = (res) => {
     // get data from db
     return res.status(200).json({success: 'text from server'});
@@ -23,8 +18,6 @@ const getForId = (res) => {
     // get data from db.js =>  getMessagesForId
     return res.status(200).json({success: 'text from server'});
 }
-
-
 
 exports.cntr_text = async function(req, res) {
     const action = req.body.action;

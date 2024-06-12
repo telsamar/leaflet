@@ -1,44 +1,97 @@
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import React, { useEffect, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { connect } from "react-redux";
+import { io } from 'socket.io-client';
+import { socketAddMarker, socketInitMarkers } from '../store/data/actions';
 
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import iconShadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
+// Стандартная иконка Leaflet
 let DefaultIcon = L.icon({
-    iconUrl: iconUrl,
-    shadowUrl: iconShadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-    shadowSize: [41, 41]
+  iconUrl: iconUrl,
+  shadowUrl: iconShadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const MapPanel = ({ markers }) => {
+const socket = io('http://localhost:3030');
+
+const MapPanel = ({ markers, socketAddMarker, socketInitMarkers }) => {
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    socket.on('connect_error', () => {
+      setError('Не удается получить обновленные данные');
+    });
+
+    // Начальные маркеры от сервера
+    socket.on('initMarkers', (initMarkers) => {
+      console.log("Received initial markers: ", initMarkers);
+      socketInitMarkers(initMarkers);
+    });
+
+    // Новые маркеры от сервера
+    socket.on('newMarker', (marker) => {
+      console.log("Received new marker: ", marker);
+      socketAddMarker(marker);
+    });
+
+    // Обрабатываем сигналы
+    socket.on('signal', (message) => {
+      console.log('Received signal:', message);
+    });
+
+    return () => {
+      socket.off('initMarkers');
+      socket.off('newMarker');
+      socket.off('signal');
+    };
+  }, [socketAddMarker, socketInitMarkers]);
+
   return (
-    <MapContainer
-      center={[55.7558, 37.6176]}
-      zoom={13}
-      style={{ height: "100vh", width: "100%" }}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {markers.map((marker, idx) => (
-        <Marker key={idx} position={marker}></Marker>
-      ))}
-    </MapContainer>
+    <div>
+      {error && <div className="alert alert-danger">{error}</div>}
+      <MapContainer
+        center={[55.7558, 37.6176]}
+        zoom={13}
+        style={{ height: "100vh", width: "100%" }}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {markers.map((position, idx) => (
+          <Marker 
+            key={idx} 
+            position={position}
+          >
+            <Popup>Marker {idx + 1}</Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
   );
 };
 
 const mapStateToProps = (state) => {
+  console.log("Redux state: ", state);
   return {
     markers: state.markers
   };
 };
 
-export default connect(mapStateToProps)(MapPanel);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    socketAddMarker: (marker) => dispatch(socketAddMarker(marker)),
+    socketInitMarkers: (markers) => dispatch(socketInitMarkers(markers))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MapPanel);
