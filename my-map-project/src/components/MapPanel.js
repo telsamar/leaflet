@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { connect } from "react-redux";
 import { io } from 'socket.io-client';
-import { socketAddMarker, socketInitMarkers } from '../store/data/actions';
+import { socketAddMarker, socketInitMarkers, setCurrentLocation } from '../store/data/actions';
 
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import iconShadowUrl from 'leaflet/dist/images/marker-shadow.png';
@@ -23,7 +23,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 
 const socket = io('http://localhost:3030');
 
-const MapPanel = ({ markers, socketAddMarker, socketInitMarkers }) => {
+const MapPanel = ({ markers, socketAddMarker, socketInitMarkers, setCurrentLocation }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -55,6 +55,15 @@ const MapPanel = ({ markers, socketAddMarker, socketInitMarkers }) => {
     };
   }, [socketAddMarker, socketInitMarkers]);
 
+  const LocationMarker = () => {
+    useMapEvents({
+      click(e) {
+        setCurrentLocation(e.latlng.lat, e.latlng.lng);
+      },
+    });
+    return null;
+  };
+
   return (
     <div>
       {error && <div className="alert alert-danger">{error}</div>}
@@ -67,6 +76,7 @@ const MapPanel = ({ markers, socketAddMarker, socketInitMarkers }) => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+        <LocationMarker />
         {markers.map((position, idx) => (
           <Marker 
             key={idx} 
@@ -90,7 +100,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     socketAddMarker: (marker) => dispatch(socketAddMarker(marker)),
-    socketInitMarkers: (markers) => dispatch(socketInitMarkers(markers))
+    socketInitMarkers: (markers) => dispatch(socketInitMarkers(markers)),
+    setCurrentLocation: (latitude, longitude) => dispatch(setCurrentLocation(latitude, longitude)),
   };
 };
 

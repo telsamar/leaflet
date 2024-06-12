@@ -5,6 +5,7 @@ export const SET_LONGITUDE = "SET_LONGITUDE";
 export const RESET_COORDINATES = "RESET_COORDINATES";
 export const SOCKET_ADD_MARKER = "SOCKET_ADD_MARKER";
 export const SOCKET_INIT_MARKERS = "SOCKET_INIT_MARKERS";
+export const SET_CURRENT_LOCATION = "SET_CURRENT_LOCATION";
 
 export const act_addMarker = (latitude, longitude) => ({
   type: ADD_MARKER,
@@ -37,4 +38,9 @@ export const socketAddMarker = (marker) => ({
 export const socketInitMarkers = (markers) => ({
   type: SOCKET_INIT_MARKERS,
   payload: markers,
+});
+
+export const setCurrentLocation = (latitude, longitude) => ({
+  type: SET_CURRENT_LOCATION,
+  payload: { latitude, longitude },
 });

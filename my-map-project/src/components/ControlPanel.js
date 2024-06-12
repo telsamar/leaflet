@@ -5,7 +5,7 @@ import { act_addMarker, act_clearMarkers, act_setLatitude, act_setLongitude, act
 
 const ControlPanel = (props) => {
   const handleAddMarker = () => {
-    props.addMarker(props.latitude, props.longitude);
+    props.addMarker(props.current_latitude, props.current_longitude);
     props.resetCoordinates();
   };
 
@@ -21,7 +21,7 @@ const ControlPanel = (props) => {
           <Form.Label>Широта</Form.Label>
           <Form.Control
             type="text"
-            value={props.latitude}
+            value={props.current_latitude}
             onChange={(e) => props.setLatitude(e.target.value)}
           />
         </Form.Group>
@@ -29,7 +29,7 @@ const ControlPanel = (props) => {
           <Form.Label>Долгота</Form.Label>
           <Form.Control
             type="text"
-            value={props.longitude}
+            value={props.current_longitude}
             onChange={(e) => props.setLongitude(e.target.value)}
           />
         </Form.Group>
@@ -46,8 +46,8 @@ const ControlPanel = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    latitude: state.latitude,
-    longitude: state.longitude
+    current_latitude: state.current_latitude,
+    current_longitude: state.current_longitude
   };
 };
 

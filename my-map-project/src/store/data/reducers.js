@@ -1,9 +1,11 @@
-import { ADD_MARKER, CLEAR_MARKERS, SET_LATITUDE, SET_LONGITUDE, RESET_COORDINATES, SOCKET_ADD_MARKER, SOCKET_INIT_MARKERS } from "./actions";
+import { ADD_MARKER, CLEAR_MARKERS, SET_LATITUDE, SET_LONGITUDE, RESET_COORDINATES, SOCKET_ADD_MARKER, SOCKET_INIT_MARKERS, SET_CURRENT_LOCATION } from "./actions";
 
 const initialState = {
   latitude: "",
   longitude: "",
   markers: JSON.parse(localStorage.getItem("markers")) || [],
+  current_latitude: "",
+  current_longitude: "",
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,18 +23,18 @@ const reducer = (state = initialState, action) => {
     case SET_LATITUDE:
       return {
         ...state,
-        latitude: action.payload,
+        current_latitude: action.payload,
       };
     case SET_LONGITUDE:
       return {
         ...state,
-        longitude: action.payload,
+        current_longitude: action.payload,
       };
     case RESET_COORDINATES:
       return {
         ...state,
-        latitude: "",
-        longitude: "",
+        current_latitude: "",
+        current_longitude: "",
       };
     case SOCKET_ADD_MARKER:
       return {
@@ -43,6 +45,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         markers: action.payload,
+      };
+    case SET_CURRENT_LOCATION:
+      return {
+        ...state,
+        current_latitude: action.payload.latitude,
+        current_longitude: action.payload.longitude,
       };
     default:
       return state;
