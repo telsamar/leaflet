@@ -7,9 +7,9 @@ export const SOCKET_ADD_MARKER = "SOCKET_ADD_MARKER";
 export const SOCKET_INIT_MARKERS = "SOCKET_INIT_MARKERS";
 export const SET_CURRENT_LOCATION = "SET_CURRENT_LOCATION";
 
-export const act_addMarker = (latitude, longitude) => ({
+export const act_addMarker = (latitude, longitude, icon) => ({
   type: ADD_MARKER,
-  payload: { latitude, longitude },
+  payload: { latitude, longitude, icon },
 });
 
 export const act_clearMarkers = () => ({

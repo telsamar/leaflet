@@ -1,6 +1,6 @@
 const markers = [
-    [55.751244, 37.618423],
-    [55.760186, 37.618698]
+    [55.751244, 37.618423, 'dot1'],
+    [55.760186, 37.618698, 'dot2']
 ];
 
 exports.server_socket = {
@@ -15,7 +15,7 @@ exports.server_socket = {
             this.sockets.push(socket);
 
             console.log('Sending initial markers to client: ', markers);
-            socket.emit('initMarkers', markers); // Теккущие маркеры
+            socket.emit('initMarkers', markers); // Текущие маркеры
 
             socket.on('disconnect', (reason) => {
                 this.sockets = this.sockets.filter(s => s.id !== socket.id);
@@ -25,7 +25,7 @@ exports.server_socket = {
             socket.on('addMarker', (marker) => {
                 markers.push(marker);
                 console.log('New marker added: ', marker);
-                this.io.emit('newMarker', marker);  // Оповещаем всех пользователей о новом маркере
+                this.io.emit('newMarker', marker);
             });
         });
         return this.io;
@@ -34,7 +34,7 @@ exports.server_socket = {
     sendSignalToAllClients() {
         console.log('send message');
         this.sockets.map(s => {
-            s.emit('signal', '!')    // Set name socket
+            s.emit('signal', '!')
         })
     },    
     
@@ -46,7 +46,7 @@ exports.server_socket = {
             for (let i of s.client.sockets.keys()) {
                 if (i === socket_id) {
                     console.log('send info to client with id = ' + i + ' (' + socket_id + ')');
-                    s.emit('message', info)    // Set name socket
+                    s.emit('message', info)
                 }
             }
         })

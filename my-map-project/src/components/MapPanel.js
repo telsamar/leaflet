@@ -27,6 +27,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
 const socket = io('http://localhost:3030');
 
 const MapPanel = ({ markers, socketAddMarker, socketInitMarkers, setCurrentLocation }) => {
+  // TODO: избавиться от useState
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -80,14 +81,17 @@ const MapPanel = ({ markers, socketAddMarker, socketInitMarkers, setCurrentLocat
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         <LocationMarker />
-        {markers.map((position, idx) => (
-          <Marker 
-            key={idx} 
-            position={position}
-          >
-            <Popup>Marker {idx + 1}</Popup>
-          </Marker>
-        ))}
+        {markers.map((position, idx) => {
+          console.log("Rendering marker:", position);
+          return (
+            <Marker 
+              key={idx} 
+              position={[position[0], position[1]]}
+            >
+              <Popup>{position[2]}</Popup>
+            </Marker>
+          );
+        })}
       </MapContainer>
     </div>
   );
