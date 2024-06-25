@@ -6,7 +6,7 @@ import {
   RESET_COORDINATES, 
   SOCKET_ADD_MARKER, 
   SOCKET_INIT_MARKERS, 
-  SET_CURRENT_LOCATION 
+  SET_CURRENT_LOCATION,
 } from "./actions";
 
 const initialState = {

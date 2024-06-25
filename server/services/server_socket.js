@@ -1,7 +1,4 @@
-const markers = [
-    [55.751244, 37.618423, 'dot1'],
-    [55.760186, 37.618698, 'dot2']
-];
+const markers = require('./markers');
 
 exports.server_socket = {
     io: null,

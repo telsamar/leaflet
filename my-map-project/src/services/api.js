@@ -25,7 +25,7 @@ export const commonAPI = (api, action, body = {}, dispatcher = null, api_request
     .catch(error => console.error('API error:', error));
 };
 
-// API-функция для получения всех иконок
+// получение всех иконок
 export const API_getIcons = (callback) => {
     commonAPI('icons', 'get', {}, null, callback);
 };
