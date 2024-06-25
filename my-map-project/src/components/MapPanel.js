@@ -4,10 +4,10 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { connect } from "react-redux";
 import { io } from 'socket.io-client';
-import { 
-  socketAddMarker, 
-  socketInitMarkers, 
-  act_setCurrentLocation 
+import {
+  socketAddMarker,
+  socketInitMarkers,
+  act_setCurrentLocation
 } from '../store/data/actions';
 
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
@@ -84,8 +84,8 @@ const MapPanel = ({ markers, socketAddMarker, socketInitMarkers, setCurrentLocat
         {markers.map((position, idx) => {
           console.log("Rendering marker:", position);
           return (
-            <Marker 
-              key={idx} 
+            <Marker
+              key={idx}
               position={[position[0], position[1]]}
             >
               <Popup>{position[2]}</Popup>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Button, Form, Card } from "react-bootstrap";
 import { connect } from "react-redux";
-import { 
-    act_addMarker, 
-    act_clearMarkers, 
-    act_setLatitude, 
-    act_setLongitude, 
-    act_resetCoordinates 
+import {
+    act_addMarker,
+    act_clearMarkers,
+    act_setLatitude,
+    act_setLongitude,
+    act_resetCoordinates
 } from "../store/data/actions";
 import { API_getIcons } from '../services/api';
 
@@ -66,13 +66,13 @@ const ControlPanel = (props) => {
                     <Form.Label>Иконка</Form.Label>
                     <div className="icon-list">
                         {icons.map(icon => (
-                            <Card 
-                                key={icon.id} 
+                            <Card
+                                key={icon.id}
                                 onClick={() => setSelectedIcon(icon.name)}
-                                style={{ 
-                                    display: 'inline-block', 
-                                    margin: '5px', 
-                                    cursor: 'pointer', 
+                                style={{
+                                    display: 'inline-block',
+                                    margin: '5px',
+                                    cursor: 'pointer',
                                     width: '100px',
                                     height: '150px',
                                     border: selectedIcon === icon.name ? '2px solid #007bff' : '1px solid #ddd',

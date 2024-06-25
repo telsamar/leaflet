@@ -5,7 +5,7 @@ const options = {
     headers: {
         'Content-Type': 'application/json',
     },
-    mode: 'cors', 
+    mode: 'cors',
 };
 
 export const commonAPI = (api, action, body = {}, dispatcher = null, api_request = null) => {
@@ -13,16 +13,16 @@ export const commonAPI = (api, action, body = {}, dispatcher = null, api_request
         ...options,
         body: JSON.stringify({ action, ...body })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (dispatcher) {
-            store.dispatch(dispatcher(data.success));
-        }
-        if (api_request) {
-            api_request(data);
-        }
-    })
-    .catch(error => console.error('API error:', error));
+        .then(response => response.json())
+        .then(data => {
+            if (dispatcher) {
+                store.dispatch(dispatcher(data.success));
+            }
+            if (api_request) {
+                api_request(data);
+            }
+        })
+        .catch(error => console.error('API error:', error));
 };
 
 // получение всех иконок
