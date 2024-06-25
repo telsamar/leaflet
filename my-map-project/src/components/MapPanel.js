@@ -4,12 +4,15 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { connect } from "react-redux";
 import { io } from 'socket.io-client';
-import { socketAddMarker, socketInitMarkers, setCurrentLocation } from '../store/data/actions';
+import { 
+  socketAddMarker, 
+  socketInitMarkers, 
+  act_setCurrentLocation 
+} from '../store/data/actions';
 
 import iconUrl from 'leaflet/dist/images/marker-icon.png';
 import iconShadowUrl from 'leaflet/dist/images/marker-shadow.png';
 
-// Стандартная иконка Leaflet
 let DefaultIcon = L.icon({
   iconUrl: iconUrl,
   shadowUrl: iconShadowUrl,
@@ -101,7 +104,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     socketAddMarker: (marker) => dispatch(socketAddMarker(marker)),
     socketInitMarkers: (markers) => dispatch(socketInitMarkers(markers)),
-    setCurrentLocation: (latitude, longitude) => dispatch(setCurrentLocation(latitude, longitude)),
+    setCurrentLocation: (latitude, longitude) => dispatch(act_setCurrentLocation(latitude, longitude)),
   };
 };
 

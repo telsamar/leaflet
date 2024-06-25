@@ -1,7 +1,13 @@
 import React from "react";
 import { Button, Form } from "react-bootstrap";
 import { connect } from "react-redux";
-import { act_addMarker, act_clearMarkers, act_setLatitude, act_setLongitude, act_resetCoordinates } from "../store/data/actions";
+import { 
+  act_addMarker, 
+  act_clearMarkers, 
+  act_setLatitude, 
+  act_setLongitude, 
+  act_resetCoordinates 
+} from "../store/data/actions";
 
 const ControlPanel = (props) => {
   const handleAddMarker = () => {

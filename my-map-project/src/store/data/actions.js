@@ -40,7 +40,7 @@ export const socketInitMarkers = (markers) => ({
   payload: markers,
 });
 
-export const setCurrentLocation = (latitude, longitude) => ({
+export const act_setCurrentLocation = (latitude, longitude) => ({
   type: SET_CURRENT_LOCATION,
   payload: { latitude, longitude },
 });
